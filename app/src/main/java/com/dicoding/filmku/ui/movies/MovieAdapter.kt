@@ -1,5 +1,6 @@
 package com.dicoding.filmku.ui.movies
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,22 +10,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.filmku.R
 import com.dicoding.filmku.data.Movie
 import com.dicoding.filmku.databinding.ItemMovieBinding
+import com.dicoding.filmku.ui.detail.DetailMovieActivity
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
-
     private var movie = ArrayList<Movie>()
-
 
     fun setMovie(movies: List<Movie>?) {
         if (movies == null) return
         this.movie.clear()
         this.movie.addAll(movies)
-    }
-
-    private var onItemClickCallback: OnItemClickCallback? = null
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -39,10 +33,6 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun getItemCount() = movie.size
 
-    interface OnItemClickCallback {
-        fun onItemClicked(data: Movie)
-    }
-
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding = ItemMovieBinding.bind(itemView)
         fun bind(movie: Movie) {
@@ -54,10 +44,10 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 .into(binding.imgPoster)
 
             itemView.setOnClickListener {
-                onItemClickCallback?.onItemClicked(movie)
-
+                val intent = Intent(itemView.context, DetailMovieActivity::class.java)
+                intent.putExtra(DetailMovieActivity.EXTRA_DATA, movie.movieId)
+                itemView.context.startActivity(intent)
             }
-
         }
     }
 }

@@ -2,6 +2,7 @@ package com.dicoding.filmku.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.filmku.data.TvShow
@@ -12,26 +13,32 @@ class DetailTvActivity : AppCompatActivity() {
         const val EXTRA_DATA = "extra_data"
     }
 
-    private lateinit var detailTvActivityBinding: ActivityDetailTvBinding
+    private lateinit var binding: ActivityDetailTvBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        detailTvActivityBinding = ActivityDetailTvBinding.inflate(layoutInflater)
-        setContentView(detailTvActivityBinding.root)
+        binding = ActivityDetailTvBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val extras = intent.getParcelableExtra<TvShow>(EXTRA_DATA)
+        val viewModel = ViewModelProvider(this,
+            ViewModelProvider.NewInstanceFactory())[DetailTvViewModel::class.java]
+
+        val extras = intent.extras
         if (extras != null) {
-            val tvTitle = extras.title
-            val tvDescription = extras.description
-            val tvImg = extras.img
-
-            detailTvActivityBinding.tvTitle.text = tvTitle.toString()
-            detailTvActivityBinding.tvDescription.text = tvDescription.toString()
-            Glide.with(this)
-                .load(tvImg)
-                .apply(RequestOptions().override(100, 100))
-                .into(detailTvActivityBinding.tvImage)
-
+            val showId = extras.getString(EXTRA_DATA)
+            if (showId != null) {
+                viewModel.setSelectedTvShow(showId)
+                populateTvShow(viewModel.getTvShow())
+            }
         }
+    }
+
+    private fun populateTvShow(tvShow: TvShow){
+        binding.tvTitle.text = tvShow.title
+        binding.tvDescription.text = tvShow.description
+        Glide.with(this)
+            .load(tvShow.img)
+            .apply(RequestOptions().override(100, 100))
+            .into(binding.tvImage)
     }
 }

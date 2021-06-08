@@ -2,7 +2,6 @@ package com.dicoding.filmku.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dicoding.filmku.R
 import com.dicoding.filmku.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {

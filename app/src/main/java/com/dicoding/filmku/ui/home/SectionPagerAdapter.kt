@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.dicoding.filmku.R
-import com.dicoding.filmku.data.Movie
-import com.dicoding.filmku.data.TvShow
 import com.dicoding.filmku.ui.movies.MovieFragment
 import com.dicoding.filmku.ui.tvShow.TvShowFragment
 

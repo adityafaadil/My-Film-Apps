@@ -1,5 +1,6 @@
 package com.dicoding.filmku.ui.tvShow
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.filmku.R
 import com.dicoding.filmku.data.TvShow
 import com.dicoding.filmku.databinding.ItemTvBinding
+import com.dicoding.filmku.ui.detail.DetailTvActivity
 
 class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvViewHolder>() {
     private var tvShow = ArrayList<TvShow>()
@@ -17,16 +19,6 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvViewHolder>() {
         if (tvShows == null) return
         this.tvShow.clear()
         this.tvShow.addAll(tvShows)
-    }
-
-    private var onItemClickCallback:  OnItemClickCallback? = null
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
-
-    interface OnItemClickCallback {
-        fun onItemClicked(data: TvShow)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvViewHolder {
@@ -51,10 +43,10 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvViewHolder>() {
                 .apply(RequestOptions().override(55, 55))
                 .into(binding.imgPoster)
 
-
             itemView.setOnClickListener {
-                onItemClickCallback?.onItemClicked(tvShow)
-
+                val intent = Intent(itemView.context, DetailTvActivity::class.java)
+                intent.putExtra(DetailTvActivity.EXTRA_DATA, tvShow.showId)
+                itemView.context.startActivity(intent)
             }
         }
     }
